@@ -655,10 +655,13 @@ static struct pm8921_bms_platform_data pm8921_bms_pdata __devinitdata = {
 	.rconn_mohm			= 18,
 	.normal_voltage_calc_ms		= 20000,
 	.low_voltage_calc_ms		= 1000,
+	.disable_flat_portion_ocv	= 1,
+	.ocv_dis_high_soc		= 99,
+	.ocv_dis_low_soc		= 1,
 	.alarm_low_mv			= 3400,
 	.alarm_high_mv			= 4000,
-	.high_ocv_correction_limit_uv	= 50,
-	.low_ocv_correction_limit_uv	= 100,
+	.high_ocv_correction_limit_uv	= 100,
+	.low_ocv_correction_limit_uv	= 150,
 	.hold_soc_est			= 3,
 	.enable_fcc_learning		= 1,
 	.min_fcc_learning_soc		= 20,
@@ -807,6 +810,9 @@ void __init msm8930_init_pmic(void)
 			pm8921_bms_pdata.battery_type = BATT_PALLADIUM;
 		else if (machine_is_msm8930_cdp())
 			pm8921_chg_pdata.has_dc_supply = true;
+#if defined(CONFIG_MACH_SERRANO_EUR_LTE) || defined(CONFIG_MACH_SERRANO_EUR_3G)
+		pm8038_platform_data.leds_pdata = NULL;
+#endif
 	}
 
 	if (!machine_is_msm8930_mtp() && !machine_is_msm8930_evt())
